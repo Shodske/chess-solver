@@ -16,7 +16,7 @@ class Queen extends Piece
      *
      * @param Board $board
      */
-    function markUnsafe(Board $board) {
+    public function markCoveredFields(Board $board) {
         $x = $this->getX();
         $y = $this->getY();
         $height = $board->getHeight();
@@ -35,37 +35,45 @@ class Queen extends Piece
             if ($canMoveLeft) {
                 if ($board->getFieldStatus($left, $y) == Board::FIELD_SAFE) {
                     $board->setFieldStatus($left, $y, Board::FIELD_UNSAFE);
+                    $this->addCoveredField($left, $y);
                 }
 
                 if ($canMoveDown && $board->getFieldStatus($left, $down) == Board::FIELD_SAFE) {
                     $board->setFieldStatus($left, $down, Board::FIELD_UNSAFE);
+                    $this->addCoveredField($left, $down);
                 }
 
                 if ($canMoveUp && $board->getFieldStatus($left, $up) == Board::FIELD_SAFE) {
                     $board->setFieldStatus($left, $up, Board::FIELD_UNSAFE);
+                    $this->addCoveredField($left, $up);
                 }
             }
 
             if ($canMoveRight) {
                 if ($board->getFieldStatus($right, $y) == Board::FIELD_SAFE) {
                     $board->setFieldStatus($right, $y, Board::FIELD_UNSAFE);
+                    $this->addCoveredField($right, $y);
                 }
 
                 if ($canMoveDown && $board->getFieldStatus($right, $down) == Board::FIELD_SAFE) {
                     $board->setFieldStatus($right, $down, Board::FIELD_UNSAFE);
+                    $this->addCoveredField($right, $down);
                 }
 
                 if ($canMoveUp && $board->getFieldStatus($right, $up) == Board::FIELD_SAFE) {
                     $board->setFieldStatus($right, $up, Board::FIELD_UNSAFE);
+                    $this->addCoveredField($right, $up);
                 }
             }
 
             if ($canMoveDown && $board->getFieldStatus($x, $down) == Board::FIELD_SAFE) {
                 $board->setFieldStatus($x, $down, Board::FIELD_UNSAFE);
+                $this->addCoveredField($x, $down);
             }
 
             if ($canMoveUp && $board->getFieldStatus($x, $up) == Board::FIELD_SAFE) {
                 $board->setFieldStatus($x, $up, Board::FIELD_UNSAFE);
+                $this->addCoveredField($x, $up);
             }
         }
     }

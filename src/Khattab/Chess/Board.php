@@ -26,13 +26,13 @@ class Board
         $this->width = $width;
         $this->height = $height;
 
-        $this->createFields();
+        $this->reset();
     }
 
     /**
      * Initializes the fields as a 2D array with all empty fields.
      */
-    private function createFields() {
+    public function reset() {
         $this->fields = array_fill(0, $this->getWidth(), array_fill(0, $this->getHeight(), self::FIELD_SAFE));
     }
 
@@ -69,11 +69,11 @@ class Board
     /**
      * Set the status of a field.
      *
-     * @param int $status FIELD_UNSAFE|FIELD_SAFE|FIELD_OCCUPIED
      * @param int $x
      * @param int $y
+     * @param int $status FIELD_UNSAFE|FIELD_SAFE|FIELD_OCCUPIED
      */
-    public function setFieldStatus($status, $x, $y) {
+    public function setFieldStatus($x, $y, $status) {
         $this->fields[$x][$y] = $status;
     }
 
@@ -86,5 +86,33 @@ class Board
      */
     public function getFieldStatus($x, $y) {
         return $this->fields[$x][$y];
+    }
+
+    /**
+     * Return a string representation of the board.
+     *
+     * @return string
+     */
+    public function __toString() {
+        $boardString = '';
+        for ($y = 0; $y < $this->getHeight(); $y++) {
+            $rowString = '';
+            for ($x = 0; $x < $this->getWidth(); $x++) {
+                switch ($this->getFieldStatus($x, $y)) {
+                    case self::FIELD_OCCUPIED:
+                        $rowString .= 'O';
+                        break;
+                    case self::FIELD_SAFE:
+                        $rowString .= ' ';
+                        break;
+                    case self::FIELD_UNSAFE:
+                        $rowString .= 'X';
+                        break;
+                }
+            }
+            $boardString .= PHP_EOL . $rowString;
+        }
+
+        return $boardString;
     }
 }

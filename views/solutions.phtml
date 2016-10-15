@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chess solver</title>
+</head>
+
+<body>
+<form method="get">
+    <label for="width">Board width</label>
+    <input type="text" name="width" id="width" value="<?php echo $this->width; ?>" />
+    <label for="height">Board height</label>
+    <input type="text" name="height" id="height" value="<?php echo $this->height; ?>" />
+    <label for="queens">Number of queens</label>
+    <input type="text" name="queens" id="queens" value="<?php echo $this->queens; ?>" />
+    <input type="submit" />
+</form>
+
+<h1>Number of solutions: <?php echo count($this->solutions); ?></h1>
+
+<?php foreach ($this->solutions as $solution): ?>
+    <pre><?php echo $solution; ?></pre>
+<?php endforeach; ?>
+
+</body>
+
+</html>

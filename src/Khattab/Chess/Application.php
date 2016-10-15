@@ -9,10 +9,10 @@ use Khattab\Chess\Solver\AllSafeSolver;
 class Application extends BaseApplication
 {
 
-    public function run() {
-        $width = $this->getParam('width');
-        $height = $this->getParam('height');
-        $queens = $this->getParam('queens');
+    protected function run() {
+        $width = $this->getParam('width', 0);
+        $height = $this->getParam('height', 0);
+        $queens = $this->getParam('queens', 0);
 
         $solver = new AllSafeSolver();
         $solver->setBoard(new Board($width, $height));
@@ -20,6 +20,13 @@ class Application extends BaseApplication
             $solver->addPiece(new Queen());
         }
 
-        echo $solver->solve();
+        $this->setView('solutions');
+
+        return [
+            'solutions' => $solver->solve(),
+            'width'     => $width,
+            'height'    => $height,
+            'queens'    => $queens,
+        ];
     }
 }

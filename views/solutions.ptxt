@@ -1,0 +1,7 @@
+<?php foreach ($this->solutions as $solution): ?>
+<?php echo $solution; ?>
+
+<?php endforeach; ?>
+
+Total number of solutions found: <?php echo count($this->solutions); ?>
+

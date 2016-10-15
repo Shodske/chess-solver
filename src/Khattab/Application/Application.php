@@ -11,6 +11,8 @@ abstract class Application
     /** @var array */
     private $params = [];
 
+    private $view;
+
     /**
      * Application constructor, initializes the params array.
      */
@@ -36,9 +38,21 @@ abstract class Application
     }
 
     /**
-     * Method to be called to run the application, should be implemented by subclasses.
+     * Method to be called when the application should start. Calls start() and
+     * renders the view.
      */
-    abstract public function run();
+    public function start() {
+        $results = $this->run();
+        $view = $this->getView();
+        $view->setParams($results);
+        $view->render();
+    }
+
+    /**
+     * Method to be implemented by the subclass, get's called by start().
+     * @return array
+     */
+    abstract protected function run();
 
     /**
      * Detect if we're running from a command line interface.
@@ -50,16 +64,17 @@ abstract class Application
     }
 
     /**
-     * Get a param for given key, returns null if no param is set.
+     * Get a param for given key, returns $default if no param is set.
      *
      * @param  string $key
-     * @return null|mixed
+     * @param  mixed  $default
+     * @return mixed
      */
-    protected function getParam($key) {
+    protected function getParam($key, $default = null) {
         if (isset($this->params[$key]))
             return $this->params[$key];
 
-        return null;
+        return $default;
     }
 
     /**
@@ -68,7 +83,28 @@ abstract class Application
      * @param string $key
      * @param mixed  $value
      */
-    private function setParam($key, $value) {
+    protected function setParam($key, $value) {
         $this->params[$key] = $value;
+    }
+
+    /**
+     * Set the name of template of the view to use.
+     *
+     * @param string $template
+     */
+    protected function setView($template) {
+        $this->getView()->setTemplate('../views/' . $template . ($this->isCli() ? '.ptxt' : '.phtml'));
+    }
+
+    /**
+     * Get the view model.
+     *
+     * @return View
+     */
+    private function getView() {
+        if (!isset($this->view)) {
+            $this->view = new View();
+        }
+        return $this->view;
     }
 }

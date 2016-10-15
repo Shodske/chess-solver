@@ -9,4 +9,4 @@ $autoLoader = new AutoLoader();
 $autoLoader->register();
 
 $app = new Application();
-$app->run();
+$app->start();
